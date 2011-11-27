@@ -1,7 +1,3 @@
-* Omit parentheses around parameters for methods that are part of an internal DSL (e.g. Rake, Rails, RSpec),
- methods that are with "keyword" status in Ruby (e.g. attr_reader, puts)
- and attribute access methods. Use parentheses around the arguments of all other method invocations.
-
 # Prelude
 
 > Style is what separates the good from the great. <br/>
