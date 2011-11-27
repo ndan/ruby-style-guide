@@ -742,37 +742,6 @@ in *Ruby* now, not in *Python*.
       end
     end
 
-* or
-
-    ```Ruby
-    class SomeClass
-      def public_method
-        # ...
-      end
-
-      private
-
-        def private_method
-          # ...
-        end
-    end
-
-* or
-
-    ```Ruby
-    class SomeClass
-      def public_method
-        # ...
-      end
-
-    private
-
-      def private_method
-        # ...
-      end
-    end
-	
-
 * Use `def self.method` to define singleton methods. This makes the methods
   more resistant to refactoring changes.
 
