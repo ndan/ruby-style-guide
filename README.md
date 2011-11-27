@@ -1,3 +1,7 @@
+* Omit parentheses around parameters for methods that are part of an internal DSL (e.g. Rake, Rails, RSpec),
+ methods that are with "keyword" status in Ruby (e.g. attr_reader, puts)
+ and attribute access methods. Use parentheses around the arguments of all other method invocations.
+
 # Abstract
 
 > Style is what separates the good from the great. <br/>
@@ -182,6 +186,9 @@ wkhtmltopdf can be installed in one of two methods
            else 'Jazz'
            end
     ```
+    * RubyMine
+        `Settings -> Project Settings -> Code Style -> Ruby -> Indent when cases -> off
+
 
 * Use an empty line before the return value of a method (unless it
   only has one line), and an empty line between `def`s.
@@ -202,7 +209,7 @@ wkhtmltopdf can be installed in one of two methods
 * Use RDoc and its conventions for API documentation.  Don't put an
   empty line between the comment block and the `def`.
 * Use empty lines to break up a method into logical paragraphs.
-* Keep lines fewer than 80 characters.
+* Keep lines fewer than 120 characters.
     * Emacs users might want to put this in their config
       (e.g. `~/.emacs.d/init.el`):
 
@@ -225,6 +232,10 @@ wkhtmltopdf can be installed in one of two methods
         ```
 
     * Textmate
+
+    * RubyMine
+        `Settings -> Project Settings -> Code Style -> General -> Right margin (columns) -> 120`
+        
 
 * Avoid trailing whitespace.
     * Emacs users might want to put this in their config (ideally
@@ -251,6 +262,9 @@ wkhtmltopdf can be installed in one of two methods
         suggested one.
 
     * Textmate users might want to take a look at the [Uber Glory bundle](https://github.com/glennr/uber-glory-tmbundle).
+
+    * RubyMine
+        `Settings -> Editor -> Enable in place refactorings -> Strip trailing spaces on Save -> Modified Lines`
 
 <a name="syntax"/>
 ## Syntax
@@ -348,6 +362,8 @@ wkhtmltopdf can be installed in one of two methods
 * Use `&&/||` for boolean expressions, `and/or` for control flow.  (Rule
   of thumb: If you have to use outer parentheses, you are using the
   wrong operators.)
+  See http://stackoverflow.com/questions/1426826/difference-between-and-and-in-ruby
+  for understanding difference between 'and' and '&&'
 
     ```Ruby
     # boolean expression
@@ -431,7 +447,7 @@ wkhtmltopdf can be installed in one of two methods
 
     ```Ruby
     class Person
-      attr_reader name, age
+      attr_reader :name, :age
 
       # omitted
     end
@@ -711,7 +727,7 @@ in accordance with their intended usage. Don't go off leaving
 everything `public` (which is the default). After all we're coding
 in *Ruby* now, not in *Python*.
 * Indent the `public`, `protected`, and `private` methods as much the
-  method definitions they apply to. Leave one blank line above them.
+  method definitions they apply to. Leave one blank line above and before them.
 
     ```Ruby
     class SomeClass
@@ -720,10 +736,42 @@ in *Ruby* now, not in *Python*.
       end
 
       private
+
       def private_method
         # ...
       end
     end
+
+* or
+
+    ```Ruby
+    class SomeClass
+      def public_method
+        # ...
+      end
+
+      private
+
+        def private_method
+          # ...
+        end
+    end
+
+* or
+
+    ```Ruby
+    class SomeClass
+      def public_method
+        # ...
+      end
+
+    private
+
+      def private_method
+        # ...
+      end
+    end
+	
 
 * Use `def self.method` to define singleton methods. This makes the methods
   more resistant to refactoring changes.
@@ -740,8 +788,7 @@ in *Ruby* now, not in *Python*.
         # body omitted
       end
 
-      # Also possible and convenient when you
-      # have to define many singleton methods.
+      # Avoid style:
       class << self
         def first_method
           # body omitted
@@ -768,10 +815,10 @@ in *Ruby* now, not in *Python*.
 * Prefer `%w` to the literal array syntax when you need an array of
 strings.
 * Avoid the creation of huge gaps in arrays.
-* Use `Set` instead of `Array` when dealing with lots of elements.
+* Use `Set` instead of `Array` when dealing with lots of elements. (see http://corelib.rubyonrails.org/classes/Set.html for details)
 * Use symbols instead of strings as hash keys.
-* Avoid the use of mutable object as hash keys.
-* Use the new 1.9 literal hash syntax in preference to the hashrocket syntax.
+* Avoid the use of mutable object as hash keys. (see http://rubylearning.com/satishtalim/mutable_and_immutable_objects.html)
+* Use the new 1.9 literal hash syntax in preference to the hashrocket syntax.  (see http://peepcode.com/blog/2011/rip-ruby-hash-rocket-syntax)
 * Rely on the fact that hashes in 1.9 are ordered.
 * Never modify a collection while traversing it.
 
@@ -797,6 +844,7 @@ strings.
 
     # good
     name = 'Bozhidar'
+    s = "hey #{@wombat.name}"
     ```
 
 * Don't use `{}` around instance variables being interpolated into a
@@ -864,6 +912,17 @@ strings.
 
     # good (requires interpolation, has quotes, single line)
     %(<tr><td class="name">#{name}</td>)
+	
+    # heredoc expample:
+    str = <<-eos
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor 
+      incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
+      exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute 
+      irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
+      pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+      deserunt mollit anim id est laborum.
+    eos
+
     ```
 
 * Use `%r` only for regular expressions matching *more than* one '/' character.
